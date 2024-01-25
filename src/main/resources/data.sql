@@ -16,17 +16,17 @@ VALUES
     ('1階', 'fukuoka_1.png', 3);
 
 INSERT INTO
-    seats (position_lat, position_lng, floor_id)
+    seats (start_lat, start_lng, end_lat, end_lng, floor_id)
 VALUES
-    (287, 150, 1),
-    (203, 210, 1),
-    (161, 465, 1),
-    (79, 585, 1),
-    (0, 0, 2),
-    (0, 0, 3),
-    (0, 0, 4),
-    (0, 0, 5),
-    (0, 0, 6);
+    (225, 61, 246, 122, 1),
+    (277, 121, 298, 181, 1);
+    -- (161, 465, 1),
+    -- (79, 585, 1),
+    -- (0, 0, 2),
+    -- (0, 0, 3),
+    -- (0, 0, 4),
+    -- (0, 0, 5),
+    -- (0, 0, 6);
 
 INSERT INTO
     divisions (name)
@@ -47,6 +47,6 @@ INSERT INTO
     reservations (user_id, seat_id)
 VALUES
     (1, 1),
-    (2, 2),
-    (3, 3),
-    (4, 4);
+    (2, 2);
+    -- (3, 3),
+    -- (4, 4);

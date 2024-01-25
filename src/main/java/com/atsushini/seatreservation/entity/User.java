@@ -1,6 +1,6 @@
 package com.atsushini.seatreservation.entity;
 
-import java.util.Set;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -20,5 +20,5 @@ public class User {
     private Division division;
 
     @OneToMany(mappedBy = "user")
-    private Set<Reservation> reservations;
+    private List<Reservation> reservations;
 }

@@ -25,6 +25,7 @@ public class FloorApiController {
         floorForm.setId(floor.getId());
         floorForm.setName(floor.getName());
         floorForm.setMapImageUrl("uploads/floorMapImages/" + floor.getMapImage());
+        floorForm.setSeats(floor.getSeats());
 
         return floorForm;
     }

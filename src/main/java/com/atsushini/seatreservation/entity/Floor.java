@@ -1,6 +1,6 @@
 package com.atsushini.seatreservation.entity;
 
-import java.util.Set;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -25,5 +25,5 @@ public class Floor {
     private Office office;
 
     @OneToMany(mappedBy = "floor")
-    private Set<Seat> seats;
+    private List<Seat> seats;
 }

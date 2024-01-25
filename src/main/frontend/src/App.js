@@ -25,6 +25,7 @@ function App() {
   const handleSelectFloor = async (floorId) => {
     const floor = await axios.get(`/api/floors/${floorId}`);
     mapRef.current.setFloorMapImage(floor.data.mapImageUrl);
+    mapRef.current.setSeats(floor.data.seats);
   }
 
   return (

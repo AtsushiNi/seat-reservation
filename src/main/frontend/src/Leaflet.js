@@ -1,10 +1,12 @@
 import "leaflet/dist/leaflet.css";
 import { useImperativeHandle, forwardRef, useState } from 'react';
 import { LatLng, LatLngBounds, CRS, Icon } from 'leaflet';
-import { ImageOverlay, MapContainer, Marker, useMapEvents } from "react-leaflet";
+import { ImageOverlay, MapContainer, useMapEvents } from "react-leaflet";
+import { Seat } from "./Seat";
 
 const Leaflet = (props, ref) => {
     const [floorMapImage, setFloorMapImage] = useState("/seat.png");
+    const [seats, setSeats] = useState([]);
 
     // leafletの中心座標
     const defaultCenterLatLng = new LatLng(339, 640);
@@ -12,19 +14,6 @@ const Leaflet = (props, ref) => {
     // leafletの描画サイズ
     const defaultBounds = new LatLngBounds([0, 0], [339, 640]);
     const [bounds, setBounds] = useState(defaultBounds);
-
-    // 座席一覧
-    const seats = [
-        { id: 1, center: [287, 150] },
-        { id: 2, center: [287, 210] },
-        { id: 3, center: [203, 375] },
-        { id: 4, center: [161, 465] },
-        { id: 5, center: [79, 585] },
-    ]
-    const PersonIcon = new Icon({
-        iconUrl: "/person_icon.svg",
-        iconSize: [32, 32],
-    });
 
     const Debugger = () => {
         useMapEvents({
@@ -38,7 +27,11 @@ const Leaflet = (props, ref) => {
     // 呼び出し元からの参照
     useImperativeHandle(ref, () => ({
         // フロアを変更した時
-        setFloorMapImage: (floorMapImage) => setFloorMapImage(floorMapImage)
+        setFloorMapImage: (floorMapImage) => setFloorMapImage(floorMapImage),
+        setSeats: (seats) => {
+            console.log(seats)
+            setSeats(seats)
+        }
     }));
 
     return (
@@ -54,11 +47,9 @@ const Leaflet = (props, ref) => {
                 bounds={bounds}
                 zIndex={10}
             />
-            {
-                seats.map(seat => <Marker key={seat.id} position={seat.center} icon={PersonIcon} />)
-            }
-            <Marker position={seats[0].center} icon={PersonIcon} />
-            <Debugger />
+            {seats[0] && <Seat bounds={seats[0].bounds} onClick={() => console.log("clicked")} />}
+            {seats[1] && <Seat bounds={seats[1].bounds} onClick={() => console.log("clicked")} isReserved={true} />}
+            {/* <Debugger /> */}
         </MapContainer>
     )
 }

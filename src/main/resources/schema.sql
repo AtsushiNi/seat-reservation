@@ -13,8 +13,10 @@ CREATE TABLE IF NOT EXISTS floors (
 
 CREATE TABLE IF NOT EXISTS seats (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    position_lat INT,
-    position_lng INT,
+    start_lat INT,
+    start_lng INT,
+    end_lat INT,
+    end_lng INT,
     floor_id INT NOT NULL,
     FOREIGN KEY (floor_id) REFERENCES floors(id)
 );
