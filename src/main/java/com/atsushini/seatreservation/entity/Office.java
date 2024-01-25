@@ -1,4 +1,4 @@
-package com.atsushini.seatreservation.entities;
+package com.atsushini.seatreservation.entity;
 
 import java.util.Set;
 

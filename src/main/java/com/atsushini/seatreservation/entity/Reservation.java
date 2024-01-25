@@ -1,4 +1,4 @@
-package com.atsushini.seatreservation.entities;
+package com.atsushini.seatreservation.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
