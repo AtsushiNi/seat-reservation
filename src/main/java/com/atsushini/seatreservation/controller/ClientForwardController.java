@@ -1,4 +1,4 @@
-package com.atsushini.seatreservation.controllers;
+package com.atsushini.seatreservation.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
