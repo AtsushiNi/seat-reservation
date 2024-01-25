@@ -9,7 +9,6 @@ function App() {
   useEffect(() => {
     const fetchOffices = async () => {
       const offices = await axios.get("/api/offices");
-      console.log(offices)
       setOffices(offices.data);
     };
     fetchOffices();

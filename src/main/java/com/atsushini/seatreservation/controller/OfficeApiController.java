@@ -18,7 +18,7 @@ public class OfficeApiController {
 
     private final OfficeService officeService;
 
-    @GetMapping("/")
+    @GetMapping
     public List<OfficeDto> getOffices() {
         List<OfficeDto> offices = officeService.findAll();
         return offices;
