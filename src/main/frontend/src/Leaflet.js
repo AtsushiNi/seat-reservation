@@ -1,10 +1,10 @@
 import "leaflet/dist/leaflet.css";
-import { useState } from 'react';
+import { useImperativeHandle, forwardRef, useState } from 'react';
 import { LatLng, LatLngBounds, CRS, Icon } from 'leaflet';
 import { ImageOverlay, MapContainer, Marker, useMapEvents } from "react-leaflet";
 
-export const Leaflet = () => {
-    const [map, setMap] = useState();
+const Leaflet = (props, ref) => {
+    const [floorMapImage, setFloorMapImage] = useState("/seat.png");
 
     // leafletの中心座標
     const defaultCenterLatLng = new LatLng(339, 640);
@@ -35,6 +35,12 @@ export const Leaflet = () => {
         return null;
     }
 
+    // 呼び出し元からの参照
+    useImperativeHandle(ref, () => ({
+        // フロアを変更した時
+        setFloorMapImage: (floorMapImage) => setFloorMapImage(floorMapImage)
+    }));
+
     return (
         <MapContainer
             crs={CRS.Simple}
@@ -42,12 +48,9 @@ export const Leaflet = () => {
             zoom={0.1}
             maxZoom={1}
             scrollWheelZoom={true}
-            ref={m => {
-                setMap(m);
-            }}
         >
             <ImageOverlay
-                url="/seat.png"
+                url={floorMapImage}
                 bounds={bounds}
                 zIndex={10}
             />
@@ -59,3 +62,5 @@ export const Leaflet = () => {
         </MapContainer>
     )
 }
+
+export default forwardRef(Leaflet);

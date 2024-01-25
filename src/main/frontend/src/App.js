@@ -1,10 +1,11 @@
 import { Col, Form, Row, Select } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
-import { Leaflet } from "./Leaflet";
+import Leaflet from "./Leaflet";
 
 function App() {
+  const mapRef = useRef();
   const [offices, setOffices] = useState([]);
   const [floors, setFloors] = useState([]);
 
@@ -19,6 +20,11 @@ function App() {
   const handleSelectOffice = async (officeId) => {
     const floors = await axios.get(`/api/offices/${officeId}/floors`);
     setFloors(floors.data);
+  }
+
+  const handleSelectFloor = async (floorId) => {
+    const floor = await axios.get(`/api/floors/${floorId}`);
+    mapRef.current.setFloorMapImage(floor.data.mapImageUrl);
   }
 
   return (
@@ -46,12 +52,15 @@ function App() {
                 label: floor.name,
                 value: floor.id,
               }))}
+              onChange={handleSelectFloor}
             ></Select>
           </Form.Item>
         </Form>
       </Col>
       <Col span={8}>
-    <Leaflet />
+    <Leaflet
+      ref={mapRef}
+    />
       </Col>
     </Row>
     </>

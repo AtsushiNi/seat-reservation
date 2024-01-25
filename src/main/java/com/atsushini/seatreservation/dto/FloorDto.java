@@ -7,4 +7,5 @@ public class FloorDto {
     
     private Integer id;
     private String name;
+    private String mapImage;
 }

@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class ClientForwardController {
 
     // SPAを実現するために、任意のパスに対して/へのフォワードを行う
-    @GetMapping("/**")
-    public String forward() {
-        return "forward:/";
-    }
+    // 挙動がおかしいので一旦コメントアウト。おそらくパスの指定に不備あり
+    // @GetMapping("/**")
+    // public String forward() {
+    //     return "forward:/";
+    // }
 }

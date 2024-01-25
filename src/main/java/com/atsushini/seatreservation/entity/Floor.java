@@ -19,6 +19,7 @@ public class Floor {
     private Integer id;
 
     private String name;
+    private String mapImage;
 
     @ManyToOne
     private Office office;

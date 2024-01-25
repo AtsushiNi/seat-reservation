@@ -17,14 +17,21 @@ public class FloorService {
     
     private final FloorRepository floorRepository;
 
-    public List<FloorDto> findFloorsByOfficeId(Integer officeId) {
-        List<Floor> floors = floorRepository.findByOfficeId(officeId);
-        return floors.stream().map(floor -> {
-            FloorDto floorDto = new FloorDto();
-            floorDto.setId(floor.getId());
-            floorDto.setName(floor.getName());
-            return floorDto;
-        }).collect(Collectors.toList());
+    public FloorDto findFloorById(Integer floorId) {
+        Floor floor = floorRepository.findById(floorId).orElseThrow();
+        return convertToDto(floor);
     }
 
+    public List<FloorDto> findFloorsByOfficeId(Integer officeId) {
+        List<Floor> floors = floorRepository.findByOfficeId(officeId);
+        return floors.stream().map(this::convertToDto).collect(Collectors.toList());
+    }
+
+    private FloorDto convertToDto(Floor floor) {
+        FloorDto floorDto = new FloorDto();
+        floorDto.setId(floor.getId());
+        floorDto.setName(floor.getName());
+        floorDto.setMapImage(floor.getMapImage());
+        return floorDto;
+    }
 }
