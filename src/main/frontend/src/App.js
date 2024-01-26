@@ -1,13 +1,16 @@
-import { Col, Form, Row, Select } from "antd";
+import { Col, DatePicker, Form, Row, Select } from "antd";
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Leaflet from "./Leaflet";
+import dayjs from 'dayjs';
 
 function App() {
   const mapRef = useRef();
   const [offices, setOffices] = useState([]);
   const [floors, setFloors] = useState([]);
+  const [floor, setFloor] = useState(null);
+  const [date, setDate] = useState(dayjs());
 
   useEffect(() => {
     const fetchOffices = async () => {
@@ -25,23 +28,37 @@ function App() {
   const handleSelectFloor = async (floorId) => {
     const { data: floor } = await axios.get(`/api/floors/${floorId}`);
     mapRef.current.setFloorMapImage(floor.mapImageUrl);
+    setFloor(floor);
 
-    const today = new Date().toISOString().split('T')[0];
+    fetchReservations(floor, date);
+  }
+
+  const handleSelectDate = async (date) => {
+    setDate(date);
+
+    fetchReservations(floor, date);
+  }
+
+  const fetchReservations = async (floor, date) => {
+    mapRef.current.setSeats([]);
     const { data: reservations } = await axios.get(`/api/reservations`, {
       params: {
-        floorId: floorId,
-        date: today
+        floorId: floor.id,
+        date: date.format('YYYY-MM-DD')
       }
     });
 
-    floor.seats.forEach(seat => {
+    const newSeats = floor.seats.map(seat => {
       const reservation = reservations.find(reservation => reservation.seat.id == seat.id);
       if (reservation) {
         seat.user = reservation.user;
+      } else {
+        seat.user = null;
       }
+      return seat;
     })
 
-    mapRef.current.setSeats(floor.seats);
+    mapRef.current.setSeats(newSeats);
   }
 
   return (
@@ -71,6 +88,14 @@ function App() {
                 }))}
                 onChange={handleSelectFloor}
               ></Select>
+            </Form.Item>
+            <Form.Item label="日付">
+              <DatePicker
+                defaultValue={dayjs()}
+                allowClear={false}
+                style={{ width: "200px" }}
+                onChange={handleSelectDate}
+              />
             </Form.Item>
           </Form>
         </Col>
