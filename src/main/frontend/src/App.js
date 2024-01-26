@@ -11,6 +11,8 @@ function App() {
   const [floors, setFloors] = useState([]);
   const [floor, setFloor] = useState(null);
   const [date, setDate] = useState(dayjs());
+  const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null);
 
   useEffect(() => {
     const fetchOffices = async () => {
@@ -18,6 +20,13 @@ function App() {
       setOffices(offices.data);
     };
     fetchOffices();
+
+    const fetchUsers = async () => {
+      const {data: users} = await axios.get("/api/users");
+      setUsers(users);
+      setCurrentUser(users[0]);
+    };
+    fetchUsers();
   }, []);
 
   const handleSelectOffice = async (officeId) => {
@@ -35,6 +44,23 @@ function App() {
 
   const handleSelectDate = async (date) => {
     setDate(date);
+
+    fetchReservations(floor, date);
+  }
+
+  const handleSelectUser = async (userId) => {
+    const currentUser = users.find(user => user.id == userId);
+    setCurrentUser(currentUser);
+  }
+
+  const makeReservation = async (seatId) => {
+    await axios.post(`/api/reservations`, null, {
+      params: {
+        date: date.format('YYYY-MM-DD'),
+        seatId: seatId,
+        userId: currentUser.id
+      }
+    });
 
     fetchReservations(floor, date);
   }
@@ -97,11 +123,23 @@ function App() {
                 onChange={handleSelectDate}
               />
             </Form.Item>
+            <Form.Item label="予約ユーザー">
+              <Select
+                style={{ width: "200px" }}
+                options={users?.map((user) => ({
+                  label: user.name,
+                  value: user.id,
+                }))}
+                onChange={handleSelectUser}
+                value={currentUser?.id}
+              ></Select>
+            </Form.Item>
           </Form>
         </Col>
         <Col span={8}>
           <Leaflet
             ref={mapRef}
+            makeReservation={makeReservation}
           />
         </Col>
       </Row>

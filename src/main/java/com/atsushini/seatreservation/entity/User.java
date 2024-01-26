@@ -8,9 +8,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
+@NoArgsConstructor
 @Table(name = "users")
 public class User {
     @Id
@@ -23,4 +25,8 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Reservation> reservations;
+
+    public User(Integer id) {
+        this.id = id;
+    }
 }

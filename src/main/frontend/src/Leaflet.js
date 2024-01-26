@@ -1,10 +1,10 @@
 import "leaflet/dist/leaflet.css";
 import { useImperativeHandle, forwardRef, useState } from 'react';
-import { LatLng, LatLngBounds, CRS, Icon } from 'leaflet';
-import { ImageOverlay, MapContainer, useMapEvents } from "react-leaflet";
+import { LatLng, LatLngBounds, CRS, Icon, icon } from 'leaflet';
+import { ImageOverlay, MapContainer, Marker, Popup, useMapEvents } from "react-leaflet";
 import { Seat } from "./Seat";
 
-const Leaflet = (props, ref) => {
+const Leaflet = ({ makeReservation }, ref) => {
     const [floorMapImage, setFloorMapImage] = useState("/seat.png");
     const [seats, setSeats] = useState([]);
 
@@ -47,7 +47,7 @@ const Leaflet = (props, ref) => {
                 zIndex={10}
             />
             {
-                seats.map(seat => <Seat key={seat.id} bounds={seat.bounds} user={seat.user} />)
+                seats.map(seat => <Seat key={seat.id} bounds={seat.bounds} user={seat.user} makeReservation={() => makeReservation(seat.id)} />)
             }
             {/* <Debugger /> */}
         </MapContainer>
