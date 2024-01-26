@@ -23,47 +23,63 @@ function App() {
   }
 
   const handleSelectFloor = async (floorId) => {
-    const floor = await axios.get(`/api/floors/${floorId}`);
-    mapRef.current.setFloorMapImage(floor.data.mapImageUrl);
-    mapRef.current.setSeats(floor.data.seats);
+    const { data: floor } = await axios.get(`/api/floors/${floorId}`);
+    mapRef.current.setFloorMapImage(floor.mapImageUrl);
+
+    const today = new Date().toISOString().split('T')[0];
+    const { data: reservations } = await axios.get(`/api/reservations`, {
+      params: {
+        floorId: floorId,
+        date: today
+      }
+    });
+
+    floor.seats.forEach(seat => {
+      const reservation = reservations.find(reservation => reservation.seat.id == seat.id);
+      if (reservation) {
+        seat.user = reservation.user;
+      }
+    })
+
+    mapRef.current.setSeats(floor.seats);
   }
 
   return (
     <>
-    <Row>
-      <Col span={4}>
-        <Form
-          layout="vertical"
-          style={{ margin: "20px" }}
-        >
-          <Form.Item label="オフィス">
-            <Select
-              style={{ width: "200px" }}
-              options={offices.map((office) => ({
-                label: office.name,
-                value: office.id,
-              }))}
-              onChange={handleSelectOffice}
-            ></Select>
-          </Form.Item>
-          <Form.Item label="フロア">
-            <Select
-              style={{ width: "200px" }}
-              options={floors?.map((floor) => ({
-                label: floor.name,
-                value: floor.id,
-              }))}
-              onChange={handleSelectFloor}
-            ></Select>
-          </Form.Item>
-        </Form>
-      </Col>
-      <Col span={8}>
-    <Leaflet
-      ref={mapRef}
-    />
-      </Col>
-    </Row>
+      <Row>
+        <Col span={4}>
+          <Form
+            layout="vertical"
+            style={{ margin: "20px" }}
+          >
+            <Form.Item label="オフィス">
+              <Select
+                style={{ width: "200px" }}
+                options={offices.map((office) => ({
+                  label: office.name,
+                  value: office.id,
+                }))}
+                onChange={handleSelectOffice}
+              ></Select>
+            </Form.Item>
+            <Form.Item label="フロア">
+              <Select
+                style={{ width: "200px" }}
+                options={floors?.map((floor) => ({
+                  label: floor.name,
+                  value: floor.id,
+                }))}
+                onChange={handleSelectFloor}
+              ></Select>
+            </Form.Item>
+          </Form>
+        </Col>
+        <Col span={8}>
+          <Leaflet
+            ref={mapRef}
+          />
+        </Col>
+      </Row>
     </>
   );
 }

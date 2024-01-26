@@ -3,9 +3,11 @@ package com.atsushini.seatreservation.dto;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class SeatDto {
 
     private Integer id;

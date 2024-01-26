@@ -1,6 +1,6 @@
-import { ImageOverlay, Rectangle } from "react-leaflet";
+import { ImageOverlay, Rectangle, Tooltip } from "react-leaflet";
 
-export const Seat = ({ bounds, isReserved, onClick }) => {
+export const Seat = ({ bounds, user, onClick }) => {
     const boundsArray = [bounds.start, bounds.end];
 
     const eventHandlers = {
@@ -9,13 +9,25 @@ export const Seat = ({ bounds, isReserved, onClick }) => {
         }
     }
     return (
-        <>
-        <Rectangle
-            bounds={boundsArray}
-            color="gray"
-            eventHandlers={eventHandlers}
-        />
-        {isReserved && <ImageOverlay url="/person_icon.svg" bounds={boundsArray} zIndex={10}/>}
-        </>
+        user
+            ? (
+                <>
+                    <Rectangle
+                        bounds={boundsArray}
+                        color="gray"
+                        stroke={false}
+                        eventHandlers={eventHandlers}
+                    >
+                        <Tooltip tooltipDirection="auto">{user.name}</Tooltip>
+                    </Rectangle>
+                    <ImageOverlay url="/person_icon.svg" bounds={boundsArray} zIndex={10} />
+                </>
+            )
+            :
+            <Rectangle
+                bounds={boundsArray}
+                pathOptions={{ fill: false, color: "gray" , weight: 2 }}
+                eventHandlers={eventHandlers}
+            />
     )
 }

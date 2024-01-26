@@ -44,12 +44,13 @@ public class FloorService {
         List<Seat> seats = floor.getSeats();
         floorDto.setSeats(
                 seats.stream().map(seat -> {
-                    SeatDto seatDto = new SeatDto();
-                    seatDto.setId(seat.getId());
-                    seatDto.setBounds(
-                            new SeatDto.Bounds(
-                                    Arrays.asList(seat.getStartLat(), seat.getStartLng()),
-                                    Arrays.asList(seat.getEndLat(), seat.getEndLng())));
+                    SeatDto.Bounds bounds = new SeatDto.Bounds(
+                            Arrays.asList(seat.getStartLat(), seat.getStartLng()),
+                            Arrays.asList(seat.getEndLat(), seat.getEndLng()));
+                    SeatDto seatDto = SeatDto.builder()
+                            .id(seat.getId())
+                            .bounds(bounds)
+                            .build();
                     return seatDto;
                 }).toList());
         return floorDto;

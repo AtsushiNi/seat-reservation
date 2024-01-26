@@ -7,8 +7,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.Getter;
 
 @Entity
+@Getter
 @Table(name = "users")
 public class User {
     @Id

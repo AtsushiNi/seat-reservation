@@ -29,7 +29,6 @@ const Leaflet = (props, ref) => {
         // フロアを変更した時
         setFloorMapImage: (floorMapImage) => setFloorMapImage(floorMapImage),
         setSeats: (seats) => {
-            console.log(seats)
             setSeats(seats)
         }
     }));
@@ -47,8 +46,9 @@ const Leaflet = (props, ref) => {
                 bounds={bounds}
                 zIndex={10}
             />
-            {seats[0] && <Seat bounds={seats[0].bounds} onClick={() => console.log("clicked")} />}
-            {seats[1] && <Seat bounds={seats[1].bounds} onClick={() => console.log("clicked")} isReserved={true} />}
+            {
+                seats.map(seat => <Seat key={seat.id} bounds={seat.bounds} user={seat.user} />)
+            }
             {/* <Debugger /> */}
         </MapContainer>
     )

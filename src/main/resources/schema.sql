@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS reservations (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    date DATE NOT NULL,
     user_id INT NOT NULL,
     seat_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
