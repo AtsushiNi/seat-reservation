@@ -1,6 +1,12 @@
 # 概要
 座席予約サービス
+
+# スクリーンショット
+- オフィスやフロアを選択
 ![](/readme-images/image.png)
+- 座席をクリックして予約
+![](/readme-images/mordal.png)
+![](/readme-images/reserved.png)
 
 # 技術スタック
 - Spring Boot
