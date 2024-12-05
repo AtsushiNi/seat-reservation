@@ -1,5 +1,6 @@
 # 概要
 座席予約サービス
+![](/readme-images/image.png)
 
 # 技術スタック
 - Spring Boot
