@@ -1,150 +1,54 @@
-import { Col, DatePicker, Form, Row, Select } from "antd";
-import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
+import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
+import { Menu, Layout } from "antd";
 import "./App.css";
-import Leaflet from "./Leaflet";
-import dayjs from 'dayjs';
+import SeatMapPage from "./pages/SeatMapPage";
+import AdminPage from "./pages/AdminPage";
 
-function App() {
-  const mapRef = useRef();
-  const [offices, setOffices] = useState([]);
-  const [floors, setFloors] = useState([]);
-  const [floor, setFloor] = useState(null);
-  const [date, setDate] = useState(dayjs());
-  const [users, setUsers] = useState([]);
-  const [currentUser, setCurrentUser] = useState(null);
+const { Header, Content } = Layout;
 
-  useEffect(() => {
-    const fetchOffices = async () => {
-      const offices = await axios.get("/api/offices");
-      setOffices(offices.data);
-    };
-    fetchOffices();
-
-    const fetchUsers = async () => {
-      const {data: users} = await axios.get("/api/users");
-      setUsers(users);
-      setCurrentUser(users[0]);
-    };
-    fetchUsers();
-  }, []);
-
-  const handleSelectOffice = async (officeId) => {
-    const floors = await axios.get(`/api/offices/${officeId}/floors`);
-    setFloors(floors.data);
-  }
-
-  const handleSelectFloor = async (floorId) => {
-    const { data: floor } = await axios.get(`/api/floors/${floorId}`);
-    mapRef.current.setFloorMapImage(floor.mapImageUrl);
-    setFloor(floor);
-
-    fetchReservations(floor, date);
-  }
-
-  const handleSelectDate = async (date) => {
-    setDate(date);
-
-    fetchReservations(floor, date);
-  }
-
-  const handleSelectUser = async (userId) => {
-    const currentUser = users.find(user => user.id == userId);
-    setCurrentUser(currentUser);
-  }
-
-  const makeReservation = async (seatId) => {
-    await axios.post(`/api/reservations`, null, {
-      params: {
-        date: date.format('YYYY-MM-DD'),
-        seatId: seatId,
-        userId: currentUser.id
-      }
-    });
-
-    fetchReservations(floor, date);
-  }
-
-  const fetchReservations = async (floor, date) => {
-    mapRef.current.setSeats([]);
-    const { data: reservations } = await axios.get(`/api/reservations`, {
-      params: {
-        floorId: floor.id,
-        date: date.format('YYYY-MM-DD')
-      }
-    });
-
-    const newSeats = floor.seats.map(seat => {
-      const reservation = reservations.find(reservation => reservation.seat.id == seat.id);
-      if (reservation) {
-        seat.user = reservation.user;
-      } else {
-        seat.user = null;
-      }
-      return seat;
-    })
-
-    mapRef.current.setSeats(newSeats);
-  }
+const AppInner = () => {
+  const location = useLocation();
 
   return (
     <>
-      <Row>
-        <Col span={4}>
-          <Form
-            layout="vertical"
-            style={{ margin: "20px" }}
+      <Layout>
+        <Header style={{ display: "flex", alignItems: "center" }}>
+          <div style={{ lineHeight: 32, color: "white", fontSize: 16 }}>
+            座席予約ツール
+          </div>
+          <Menu
+            theme="dark"
+            mode="horizontal"
+            selectedKeys={[location.pathname]}
+            style={{ flex: 1, minWidth: 0, justifyContent: "flex-end" }}
           >
-            <Form.Item label="オフィス">
-              <Select
-                style={{ width: "200px" }}
-                options={offices.map((office) => ({
-                  label: office.name,
-                  value: office.id,
-                }))}
-                onChange={handleSelectOffice}
-              ></Select>
-            </Form.Item>
-            <Form.Item label="フロア">
-              <Select
-                style={{ width: "200px" }}
-                options={floors?.map((floor) => ({
-                  label: floor.name,
-                  value: floor.id,
-                }))}
-                onChange={handleSelectFloor}
-              ></Select>
-            </Form.Item>
-            <Form.Item label="日付">
-              <DatePicker
-                defaultValue={dayjs()}
-                allowClear={false}
-                style={{ width: "200px" }}
-                onChange={handleSelectDate}
-              />
-            </Form.Item>
-            <Form.Item label="予約ユーザー">
-              <Select
-                style={{ width: "200px" }}
-                options={users?.map((user) => ({
-                  label: user.name,
-                  value: user.id,
-                }))}
-                onChange={handleSelectUser}
-                value={currentUser?.id}
-              ></Select>
-            </Form.Item>
-          </Form>
-        </Col>
-        <Col span={8}>
-          <Leaflet
-            ref={mapRef}
-            makeReservation={makeReservation}
-          />
-        </Col>
-      </Row>
+            <Menu.Item key="/">
+              <Link to="/">マップ</Link>
+            </Menu.Item>
+            <Menu.Item key="/search">
+              <Link to="/search">予約情報検索</Link>
+            </Menu.Item>
+            <Menu.Item key="/admin">
+              <Link to="/admin">管理画面</Link>
+            </Menu.Item>
+          </Menu>
+        </Header>
+        <Content>
+          <Routes>
+            <Route path="/" element={<SeatMapPage />} />
+            <Route path="/admin" element={<AdminPage />} />
+          </Routes>
+        </Content>
+      </Layout>
     </>
   );
 }
+
+const App = () => (
+  <BrowserRouter>
+    <AppInner />
+  </BrowserRouter>
+);
 
 export default App;
