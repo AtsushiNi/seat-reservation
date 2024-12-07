@@ -1,8 +1,8 @@
 package com.atsushini.seatreservation.dto;
 
 import java.util.List;
+import java.util.Map;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,13 +11,8 @@ import lombok.Data;
 public class SeatDto {
 
     private Integer id;
-    private Bounds bounds;
-
-    @AllArgsConstructor
-    @Data
-	public static class Bounds {
-        private List<Integer> start;
-        private List<Integer> end;
-    }
-    
+    // 座席を表現する長方形の頂点
+    // 例: [{lat: 10, lng: 10}, [lat: 50, lng: 50]]
+    // 例: [右上の頂点座標, 左下の頂点座標]
+    private List<Map<String, Integer>> bounds;
 }

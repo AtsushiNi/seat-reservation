@@ -1,7 +1,7 @@
 package com.atsushini.seatreservation.service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -21,9 +21,9 @@ public class SeatService {
     public List<SeatDto> findByFloor(Floor floor) {
         List<Seat> seats = seatRepository.findByFloor(floor);
         return seats.stream().map(seat -> {
-            SeatDto.Bounds bounds = new SeatDto.Bounds(
-                    Arrays.asList(seat.getStartLat(), seat.getStartLng()),
-                    Arrays.asList(seat.getEndLat(), seat.getEndLng()));
+            List<Map<String, Integer>> bounds = List.of(
+                    Map.of("lat", seat.getStartLat(), "lng", seat.getStartLng()),
+                    Map.of("lat", seat.getEndLat(), "lng", seat.getEndLng()));
             SeatDto seatDto = SeatDto.builder()
                     .id(seat.getId())
                     .bounds(bounds)
@@ -31,5 +31,4 @@ public class SeatService {
             return seatDto;
         }).toList();
     }
-
 }

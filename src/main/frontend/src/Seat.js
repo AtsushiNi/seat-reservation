@@ -4,7 +4,6 @@ import { ImageOverlay, Popup, Rectangle, Tooltip } from "react-leaflet";
 
 export const Seat = ({ bounds, user, makeReservation }) => {
     const [isOpenModal, setIsOpenModal] = useState(false);
-    const boundsArray = [bounds.start, bounds.end];
 
     const eventHandlers = {
         click: () => setIsOpenModal(true)
@@ -22,19 +21,19 @@ export const Seat = ({ bounds, user, makeReservation }) => {
             ? (
                 <>
                     <Rectangle
-                        bounds={boundsArray}
+                        bounds={bounds}
                         color="gray"
                         stroke={false}
                     >
                         <Tooltip tooltipDirection="auto">{user.name}</Tooltip>
                     </Rectangle>
-                    <ImageOverlay url="/person_icon.svg" bounds={boundsArray} zIndex={10} />
+                    <ImageOverlay url="/person_icon.svg" bounds={bounds} zIndex={10} />
                 </>
             )
             : (
                 <>
                     <Rectangle
-                        bounds={boundsArray}
+                        bounds={bounds}
                         pathOptions={{ fill: true, color: "#DDD", weight: 2 }}
                         opacity={0}
                         eventHandlers={eventHandlers}

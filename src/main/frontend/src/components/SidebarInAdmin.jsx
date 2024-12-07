@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Divider, Form, Select, Input, InputNumber } from "antd";
+import { Divider, Form, Select, Input, InputNumber, Button } from "antd";
 import axios from "axios";
 
 const SidebarInAdmin = (props) => {
@@ -9,6 +9,8 @@ const SidebarInAdmin = (props) => {
     setSegment,
     seatNumber,
     setSeatNumber,
+    addSeats,
+    setFloorId,
   } = props;
 
   const [offices, setOffices] = useState([]);
@@ -33,6 +35,7 @@ const SidebarInAdmin = (props) => {
   // フロアを選択・変更すると、そのフロアの画像や予約情報を取得してくる
   const handleSelectFloor = async (floorId) => {
     const { data: floor } = await axios.get(`/api/floors/${floorId}`);
+    setFloorId(floorId);
     setFloorMapImage(floor.mapImageUrl);
   };
 
@@ -67,6 +70,7 @@ const SidebarInAdmin = (props) => {
         <Form.Item label="席番">
             <InputNumber value={seatNumber} onChange={setSeatNumber} style={{ width: "200px"}} />
         </Form.Item>
+        <Button type="primary" style={{width: "200px"}} onClick={addSeats}>座席を作成</Button>
       </Form>
     </>
   );

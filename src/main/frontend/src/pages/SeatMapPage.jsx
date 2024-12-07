@@ -4,6 +4,7 @@ import axios from "axios";
 import dayjs from "dayjs";
 import Leaflet from "../components/LeafletInSeatMap";
 import Sidebar from "../components/SidebarInSeatMap";
+import { LatLng } from "leaflet";
 
 const SeatMapPage = () => {
   const mapRef = useRef();
@@ -43,7 +44,11 @@ const SeatMapPage = () => {
       } else {
         seat.user = null;
       }
-      return seat;
+      return {
+        id: seat.id,
+        bounds: [new LatLng(seat.bounds[0].lat, seat.bounds[0].lng), new LatLng(seat.bounds[1].lat, seat.bounds[1].lng)],
+        user: seat.user,
+      };
     });
 
     mapRef.current.setSeats(newSeats);

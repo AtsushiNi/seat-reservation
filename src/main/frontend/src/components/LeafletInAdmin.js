@@ -5,7 +5,7 @@ import { LatLng, LatLngBounds, CRS, divIcon } from 'leaflet';
 import { ImageOverlay, MapContainer, Polygon, Rectangle, useMapEvents, Marker } from "react-leaflet";
 
 const LeafletInSeatMap = (props) => {
-    const { floorMapImage, segment, setSegment, seatNumber, setSeatNumber } = props;
+    const { floorMapImage, segment, seatNumber, setSeatNumber, seats, setSeats } = props;
 
     // leafletの中心座標
     const defaultCenterLatLng = new LatLng(339, 640);
@@ -22,15 +22,14 @@ const LeafletInSeatMap = (props) => {
             scrollWheelZoom={true}
             style={{ maxHeight: "calc(100vh - 64px)" }}
         >
-            <Map bounds={bounds} floorMapImage={floorMapImage} segment={segment} setSegment={setSegment} seatNumber={seatNumber} setSeatNumber={setSeatNumber} />
+            <Map bounds={bounds} floorMapImage={floorMapImage} segment={segment} seatNumber={seatNumber} setSeatNumber={setSeatNumber} seats={seats} setSeats={setSeats} />
         </MapContainer>
     )
 }
 
 const Map = (props) => {
-    const { bounds, floorMapImage, segment, setSegment, seatNumber, setSeatNumber } = props;
+    const { bounds, floorMapImage, segment, seatNumber, setSeatNumber, seats, setSeats } = props;
     const [startPoint, setStartPoint] = useState(null); // 始点の座標
-    const [seats, setSeats] = useState([]); // 設定する座席リスト
 
     useMapEvents({
         click(e) {
