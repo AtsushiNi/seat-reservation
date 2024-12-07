@@ -11,6 +11,8 @@ import lombok.Data;
 public class SeatDto {
 
     private Integer id;
+    private String name;
+
     // 座席を表現する長方形の頂点
     // 例: [{lat: 10, lng: 10}, [lat: 50, lng: 50]]
     // 例: [右上の頂点座標, 左下の頂点座標]

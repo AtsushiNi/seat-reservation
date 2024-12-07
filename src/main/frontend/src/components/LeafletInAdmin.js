@@ -4,7 +4,7 @@ import { forwardRef, useState } from 'react';
 import { LatLng, LatLngBounds, CRS, divIcon } from 'leaflet';
 import { ImageOverlay, MapContainer, Polygon, Rectangle, useMapEvents, Marker } from "react-leaflet";
 
-const LeafletInSeatMap = (props) => {
+const LeafletInAdmin = (props) => {
     const { floorMapImage, segment, seatNumber, setSeatNumber, seats, setSeats } = props;
 
     // leafletの中心座標
@@ -35,9 +35,11 @@ const Map = (props) => {
         click(e) {
             if (startPoint === null) {
                 // 始点を設定
-                setStartPoint(e.latlng);
+                const point = {lat: Math.floor(e.latlng.lat), lng: Math.floor(e.latlng.lng)}
+                setStartPoint(point);
             } else {
-                const newSeat = {bounds: [startPoint, e.latlng], name: `${segment}-${seatNumber}`};
+                const point = {lat: Math.floor(e.latlng.lat), lng: Math.floor(e.latlng.lng)}
+                const newSeat = {bounds: [startPoint, point], name: `${segment}-${seatNumber}`};
                 // 座席リストに追加
                 setSeats(prevSeats => [...prevSeats, newSeat]);
                 // 始点をクリア
@@ -80,4 +82,4 @@ const Seat = ({seat}) => {
     )
 }
 
-export default forwardRef(LeafletInSeatMap);
+export default forwardRef(LeafletInAdmin);
