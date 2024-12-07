@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS floors (
 
 CREATE TABLE IF NOT EXISTS seats (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
     start_lat INT,
     start_lng INT,
     end_lat INT,

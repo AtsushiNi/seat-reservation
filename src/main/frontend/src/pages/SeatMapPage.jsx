@@ -46,6 +46,7 @@ const SeatMapPage = () => {
       }
       return {
         id: seat.id,
+        name: seat.name,
         bounds: [new LatLng(seat.bounds[0].lat, seat.bounds[0].lng), new LatLng(seat.bounds[1].lat, seat.bounds[1].lng)],
         user: seat.user,
       };

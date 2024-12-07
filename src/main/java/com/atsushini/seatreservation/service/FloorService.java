@@ -49,6 +49,7 @@ public class FloorService {
                             Map.of("lat", seat.getEndLat(), "lng", seat.getEndLng()));
                     SeatDto seatDto = SeatDto.builder()
                             .id(seat.getId())
+                            .name(seat.getName())
                             .bounds(bounds)
                             .build();
                     return seatDto;

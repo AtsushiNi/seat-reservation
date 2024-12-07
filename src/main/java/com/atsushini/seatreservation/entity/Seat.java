@@ -22,6 +22,8 @@ public class Seat {
    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String name;
     
     // floorMapImage上の位置
     // 左下の位置

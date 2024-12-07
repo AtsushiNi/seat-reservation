@@ -29,6 +29,7 @@ public class SeatService {
                     Map.of("lat", seat.getEndLat(), "lng", seat.getEndLng()));
             SeatDto seatDto = SeatDto.builder()
                     .id(seat.getId())
+                    .name(seat.getName())
                     .bounds(bounds)
                     .build();
             return seatDto;
@@ -41,6 +42,7 @@ public class SeatService {
 
         List<Seat> seatEntities = seats.stream().map(seat -> {
             Seat seatEntity = new Seat();
+            seatEntity.setName(seat.getName());
             seatEntity.setStartLat(seat.getBounds().get(0).get("lat"));
             seatEntity.setStartLng(seat.getBounds().get(0).get("lng"));
             seatEntity.setEndLat(seat.getBounds().get(1).get("lat"));

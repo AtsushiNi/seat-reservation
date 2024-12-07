@@ -1,8 +1,9 @@
+import { Button, Modal } from "antd";
 import React, { useState } from "react";
-import { Button, Modal, Popover } from "antd";
-import { ImageOverlay, Popup, Rectangle, Tooltip } from "react-leaflet";
+import { ImageOverlay, Rectangle, Tooltip, Marker } from "react-leaflet";
+import { LatLng, divIcon } from 'leaflet';
 
-export const Seat = ({ bounds, user, makeReservation }) => {
+export const Seat = ({ name, bounds, user, makeReservation }) => {
     const [isOpenModal, setIsOpenModal] = useState(false);
 
     const eventHandlers = {
@@ -15,6 +16,17 @@ export const Seat = ({ bounds, user, makeReservation }) => {
         makeReservation();
         closeModal();
     }
+
+    const center = new LatLng(
+        (bounds[0].lat + bounds[1].lat)/2.0,
+        (bounds[0].lng + bounds[1].lng)/2.0
+    );
+
+    const textIcon = divIcon({
+        html: '<div style="text-align: center; font-size: 10px; width: 40px; transform: translate(-20px, -8px); color: gray; pointer-events: none;">' + name + '</div>',
+        className: 'custom-div-icon', // カスタムクラスを定義 (不要な場合は空文字)
+        iconSize: [0, 0], // サイズは必要ないため [0, 0] を指定
+    });
 
     return (
         user
@@ -38,6 +50,7 @@ export const Seat = ({ bounds, user, makeReservation }) => {
                         opacity={0}
                         eventHandlers={eventHandlers}
                     />
+                    <Marker position={center} icon={textIcon} />
                     <Modal
                         open={isOpenModal}
                         onCancel={closeModal}

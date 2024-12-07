@@ -48,7 +48,7 @@ const LeafletInSeatMap = ({ makeReservation }, ref) => {
                 zIndex={10}
             />
             {
-                seats.map(seat => <Seat key={seat.id} bounds={seat.bounds} user={seat.user} makeReservation={() => makeReservation(seat.id)} />)
+                seats.map(seat => <Seat key={seat.id} name={seat.name} bounds={seat.bounds} user={seat.user} makeReservation={() => makeReservation(seat.id)} />)
             }
             {/* <Debugger /> */}
         </MapContainer>
