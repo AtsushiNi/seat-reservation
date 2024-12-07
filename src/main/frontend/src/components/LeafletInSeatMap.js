@@ -2,9 +2,9 @@ import "leaflet/dist/leaflet.css";
 import { useImperativeHandle, forwardRef, useState } from 'react';
 import { LatLng, LatLngBounds, CRS, Icon, icon } from 'leaflet';
 import { ImageOverlay, MapContainer, Marker, Popup, useMapEvents } from "react-leaflet";
-import { Seat } from "./Seat";
+import { Seat } from "../Seat";
 
-const Leaflet = ({ makeReservation }, ref) => {
+const LeafletInSeatMap = ({ makeReservation }, ref) => {
     const [floorMapImage, setFloorMapImage] = useState("/seat.png");
     const [seats, setSeats] = useState([]);
 
@@ -40,6 +40,7 @@ const Leaflet = ({ makeReservation }, ref) => {
             zoom={0.1}
             maxZoom={1}
             scrollWheelZoom={true}
+            style={{ maxHeight: "calc(100vh - 64px)" }}
         >
             <ImageOverlay
                 url={floorMapImage}
@@ -47,11 +48,11 @@ const Leaflet = ({ makeReservation }, ref) => {
                 zIndex={10}
             />
             {
-                seats.map(seat => <Seat key={seat.id} bounds={seat.bounds} user={seat.user} makeReservation={() => makeReservation(seat.id)} />)
+                seats.map(seat => <Seat key={seat.id} name={seat.name} bounds={seat.bounds} user={seat.user} makeReservation={() => makeReservation(seat.id)} />)
             }
             {/* <Debugger /> */}
         </MapContainer>
     )
 }
 
-export default forwardRef(Leaflet);
+export default forwardRef(LeafletInSeatMap);
