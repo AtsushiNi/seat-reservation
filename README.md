@@ -1,6 +1,6 @@
 # 概要
 座席予約サービス
-![](/readme-images/output_how-to-use.mp4)
+![](/readme-images/output.gif)
 
 # スクリーンショット
 - オフィスやフロアを選択
