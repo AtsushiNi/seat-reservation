@@ -1,6 +1,8 @@
 # 概要
 座席予約サービス
 
+https://github.com/user-attachments/assets/5bae479f-b8af-4507-842c-17a64ea709e1
+
 # スクリーンショット
 - オフィスやフロアを選択
 ![](/readme-images/image.png)
